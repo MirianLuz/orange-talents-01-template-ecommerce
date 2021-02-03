@@ -7,9 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 @Entity
 public class Usuario {
@@ -22,14 +27,17 @@ public class Usuario {
 	@NotBlank @Column(unique=true,  nullable = false)
 	private String email;
 	
-	@NotBlank @Size(min=6)
+	@NotBlank @Length(min=6)
 	private String senha;
 	
 	private LocalDateTime dataCadastro = LocalDateTime.now();;
 	
-	public Usuario(@Email @NotBlank String email, @NotBlank @Size(min = 6) String senha) {
+	public Usuario(@Email @NotBlank String email, @NotNull @Valid SenhaLimpa senhaLimpa) {
+		Assert.isTrue(StringUtils.hasLength(email), "Email não pode ser em branco");
+		Assert.notNull(senhaLimpa, "O objeto do tipo senha limpa não pode ser nulo");
+		
 		this.email = email;
-		this.senha = senha;
+		this.senha = senhaLimpa.hash();
 	}
 	
 	@Override
