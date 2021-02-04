@@ -21,8 +21,7 @@ public class LoginInputDto {
 	}
 	
 	public UsernamePasswordAuthenticationToken build() {
-		return new UsernamePasswordAuthenticationToken(this.email,
-				this.password);
+		return new UsernamePasswordAuthenticationToken(email,password);
 	}
 
 }

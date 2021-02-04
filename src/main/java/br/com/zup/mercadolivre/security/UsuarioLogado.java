@@ -12,52 +12,46 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.zup.mercadolivre.usuario.Usuario;
 
+public class UsuarioLogado implements UserDetails {
 
-public class UsuarioLogado implements UserDetails{
-
-	private static final long serialVersionUID = 1L;
-	
 	private Usuario usuario;
 	private User springUserDetails;
-	
+
 	public UsuarioLogado(@NotNull @Valid Usuario usuario) {
 		this.usuario = usuario;
 		springUserDetails = new User(usuario.getEmail(), usuario.getSenha(), List.of());
 	}
-	
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+
+	public Collection<GrantedAuthority> getAuthorities() {
 		return springUserDetails.getAuthorities();
 	}
-	
-	@Override
+
 	public String getPassword() {
 		return springUserDetails.getPassword();
 	}
-	
-	@Override
+
 	public String getUsername() {
 		return springUserDetails.getUsername();
 	}
-	
-	@Override
+
+	public boolean isEnabled() {
+		return springUserDetails.isEnabled();
+	}
+
 	public boolean isAccountNonExpired() {
 		return springUserDetails.isAccountNonExpired();
 	}
-	
-	@Override
+
 	public boolean isAccountNonLocked() {
 		return springUserDetails.isAccountNonLocked();
 	}
-	
-	@Override
+
 	public boolean isCredentialsNonExpired() {
 		return springUserDetails.isCredentialsNonExpired();
 	}
-	
-	@Override
-	public boolean isEnabled() {
-		return springUserDetails.isEnabled();
+
+	public Usuario get() {
+		return usuario;
 	}
 
 }

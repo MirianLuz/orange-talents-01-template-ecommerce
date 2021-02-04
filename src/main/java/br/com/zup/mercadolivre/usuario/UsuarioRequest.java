@@ -22,6 +22,10 @@ public class UsuarioRequest {
 		this.senha = senha;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+
 	public Usuario toModel() {
 		return new Usuario(email, new SenhaLimpa(senha));
 	}

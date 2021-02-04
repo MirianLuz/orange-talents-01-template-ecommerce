@@ -30,7 +30,11 @@ public class Usuario {
 	@NotBlank @Length(min=6)
 	private String senha;
 	
-	private LocalDateTime dataCadastro = LocalDateTime.now();;
+	private LocalDateTime dataCadastro = LocalDateTime.now();
+	
+	@Deprecated
+	public Usuario() {
+	}
 	
 	public Usuario(@Email @NotBlank String email, @NotNull @Valid SenhaLimpa senhaLimpa) {
 		Assert.isTrue(StringUtils.hasLength(email), "Email não pode ser em branco");
@@ -40,6 +44,7 @@ public class Usuario {
 		this.senha = senhaLimpa.hash();
 	}
 	
+
 	public String getEmail() {
 		return email;
 	}
@@ -48,8 +53,37 @@ public class Usuario {
 		return senha;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public LocalDateTime getDataCadastro() {
 		return dataCadastro;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 	@Override
@@ -57,5 +91,4 @@ public class Usuario {
 		return "Usuario [id=" + id + ", login=" + email + ", senha=" + senha + ", dataCadastro=" + dataCadastro + "]";
 	}
 
-	
 }
