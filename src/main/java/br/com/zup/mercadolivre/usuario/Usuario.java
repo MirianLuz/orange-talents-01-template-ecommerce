@@ -40,9 +40,22 @@ public class Usuario {
 		this.senha = senhaLimpa.hash();
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public LocalDateTime getDataCadastro() {
+		return dataCadastro;
+	}
+
 	@Override
 	public String toString() {
 		return "Usuario [id=" + id + ", login=" + email + ", senha=" + senha + ", dataCadastro=" + dataCadastro + "]";
 	}
 
+	
 }
