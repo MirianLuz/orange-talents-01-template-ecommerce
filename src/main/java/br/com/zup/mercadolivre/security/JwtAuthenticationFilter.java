@@ -27,11 +27,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
 
-		Optional<String> possibleToken = getTokenFromRequest(request);
+		String possibleToken = getTokenFromRequest(request);
 		
-        if (possibleToken.isPresent() && tokenManager.isValid(possibleToken.get())) {
+        if (possibleToken!= null && tokenManager.isValid(possibleToken)) {
             
-        	String userName = tokenManager.getUserName(possibleToken.get());
+        	String userName = tokenManager.getUserName(possibleToken);
             UserDetails userDetails = usersService.loadUserByUsername(userName);
             
             UsernamePasswordAuthenticationToken authentication = 
@@ -43,10 +43,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
         chain.doFilter(request, response);
 	}
 
-	private Optional<String> getTokenFromRequest(HttpServletRequest request) {
+	private String getTokenFromRequest(HttpServletRequest request) {
 		String authToken = request.getHeader("Authorization");
-
-		return Optional.ofNullable(authToken);
+		
+		if (authToken==null || authToken.isEmpty() || !authToken.startsWith("Bearer ")) {
+			return null;
+		}
+		return (authToken.substring(7));
 	}
 
 }

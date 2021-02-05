@@ -1,5 +1,7 @@
 package br.com.zup.mercadolivre.security;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class UserAuthenticationController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, 
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> authenticate(@RequestBody LoginInputDto loginInfo) {
+	public ResponseEntity<String> authenticate(@RequestBody @Valid LoginInputDto loginInfo) {
 	
 		UsernamePasswordAuthenticationToken authenticationToken = loginInfo.build();
 

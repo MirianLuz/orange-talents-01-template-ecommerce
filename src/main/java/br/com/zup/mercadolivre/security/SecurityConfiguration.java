@@ -50,6 +50,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.GET, "/produtos/{id: [0-9]+}").permitAll()
 				.antMatchers(HttpMethod.POST, "/usuarios").permitAll()
 				.antMatchers("/api/auth/**").permitAll()
+				.antMatchers("/h2-console/**").permitAll()
 				.anyRequest().authenticated()
 			.and().cors()
 			.and().csrf().disable()
