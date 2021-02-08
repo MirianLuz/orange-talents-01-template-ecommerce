@@ -1,55 +1,46 @@
-package br.com.zup.mercadolivre.caracteristica;
+package br.com.zup.mercadolivre.produto;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import br.com.zup.mercadolivre.produto.Produto;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
-public class Caracteristica {
+public class ImagemProduto {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
-	private String nome;
-	
-	@NotBlank
-	private String descricao;
-	
 	@ManyToOne
 	@NotNull
+	@Valid
 	private Produto produto;
 	
-	@Deprecated
-	public Caracteristica() {
-	}
-
-	public Caracteristica(@NotBlank String nome, @NotBlank String descricao, @NotNull Produto produto) {
-		this.nome = nome;
-		this.descricao = descricao;
-		this.produto = produto;
-	}
+	@URL
+	@NotBlank
+	private String link;
 	
-	public String getNome() {
-		return nome;
+	@Deprecated	
+	public ImagemProduto() {
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public ImagemProduto(@NotNull @Valid Produto produto, @URL @NotBlank String link) {
+		this.produto = produto;
+		this.link = link;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((link == null) ? 0 : link.hashCode());
 		result = prime * result + ((produto == null) ? 0 : produto.hashCode());
 		return result;
 	}
@@ -62,11 +53,11 @@ public class Caracteristica {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Caracteristica other = (Caracteristica) obj;
-		if (nome == null) {
-			if (other.nome != null)
+		ImagemProduto other = (ImagemProduto) obj;
+		if (link == null) {
+			if (other.link != null)
 				return false;
-		} else if (!nome.equals(other.nome))
+		} else if (!link.equals(other.link))
 			return false;
 		if (produto == null) {
 			if (other.produto != null)
@@ -78,7 +69,7 @@ public class Caracteristica {
 
 	@Override
 	public String toString() {
-		return "Caracteristica [id=" + id + ", nome=" + nome + ", descricao=" + descricao + "]";
+		return "ImagemProduto [id=" + id + ", link=" + link + "]";
 	}
 	
 }

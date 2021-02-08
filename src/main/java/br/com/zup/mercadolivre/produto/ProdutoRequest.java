@@ -30,7 +30,7 @@ public class ProdutoRequest {
 	private int qtdDisponivel;
 	
 	@NotNull @Size(min=3) @Valid
-	private List<CaracteristicasRequest> caracteristica = new ArrayList<>();
+	private List<CaracteristicasRequest> caracteristicas = new ArrayList<>();
 	
 	@NotBlank @Size(max = 100)
 	@UniqueValue(domainClass = Produto.class, fieldName = "descricao", message = "Já existe um produto com esta descricao")
@@ -42,21 +42,36 @@ public class ProdutoRequest {
 	
 	
 	public ProdutoRequest(@NotBlank String nome, @NotNull @Positive BigDecimal valor,
-			@NotNull @Positive int qtdDisponivel, @NotNull @Size(min = 3) @Valid List<CaracteristicasRequest> caracteristica,
-			@NotBlank @Size(max = 100) String descricao, @NotBlank @Valid Long idCategoria) {
+			@NotNull @Positive int qtdDisponivel,
+			@Valid List<CaracteristicasRequest> caracteristicas,
+			@NotBlank @Size(max = 100) String descricao, @NotNull @Valid Long idCategoria) {
 		this.nome = nome;
 		this.valor = valor;
 		this.qtdDisponivel = qtdDisponivel;
-		this.caracteristica = caracteristica;
+		this.caracteristicas.addAll(caracteristicas);
 		this.descricao = descricao;
 		this.idCategoria = idCategoria;
+	}
+
+	public List<CaracteristicasRequest> getCaracteristicas() {
+		return caracteristicas;
+	}
+
+	public void setCaracteristicas(List<CaracteristicasRequest> caracteristicas) {
+		this.caracteristicas = caracteristicas;
 	}
 
 
 	public Produto toModel(CategoriaRepository categoriaRepository, Usuario usuarioLogado) {
 		@NotNull Categoria categoria = categoriaRepository.getOne(this.idCategoria);
-		return new Produto(nome, valor, qtdDisponivel, caracteristica, descricao, categoria, usuarioLogado);
+		return new Produto(nome, valor, qtdDisponivel, caracteristicas, descricao, categoria, usuarioLogado);
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "ProdutoRequest [nome=" + nome + ", valor=" + valor + ", qtdDisponivel=" + qtdDisponivel
+				+ ", caracteristicas=" + caracteristicas + ", descricao=" + descricao + ", idCategoria=" + idCategoria
+				+ "]";
+	}
+
 }
